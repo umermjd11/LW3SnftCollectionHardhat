@@ -1,8 +1,11 @@
 {
   "name": "hardhatdir",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Welcome to the Crypto Devs NFT Collection repository! This repository contains the smart contract for the Crypto Devs NFTs. This coontract is built using Solidity and deployed on the Sepolia Test Network.",
+  "main": "hardhat.config.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,9 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "hardhat": "^2.19.2"
-  },
-  "dependencies": {
-    "dotenv": "^16.3.1"
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.4.1",
+    "hardhat": "^2.19.5"
   }
 }

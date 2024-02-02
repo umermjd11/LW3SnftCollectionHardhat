@@ -1,6 +1,14 @@
-    // SPDX-License-Identifier: MIT
-    pragma solidity ^0.8.4;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-    interface IWhitelist {
-        function whitelistedAddresses(address) external view returns (bool);
-    }
+interface IWhitelist {
+
+    function addAddressToWhitelist() external;
+
+    // Getters for state variables
+    function maxWhitelistedAddresses() external view returns (uint8);
+
+    function whitelistedAddresses(address _address) external view returns (bool);
+
+    function numAddressesWhitelisted() external view returns (uint8);
+}

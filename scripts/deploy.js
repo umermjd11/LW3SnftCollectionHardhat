@@ -1,29 +1,29 @@
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
 require("dotenv").config({ path: ".env" });
 const { WHITELIST_CONTRACT_ADDRESS, METADATA_URL } = require("../constants");
 
-async function main() {
-  // Address of the whitelist contract that you deployed in the previous module
-  const whitelistContract = WHITELIST_CONTRACT_ADDRESS;
-  // URL from where we can extract the metadata for a Crypto Dev NFT
-  const metadataURL = METADATA_URL;
-  /*
-  A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
-  so cryptoDevsContract here is a factory for instances of our CryptoDevs contract.
-  */
-  const cryptoDevsContract = await ethers.getContractFactory("CryptoDevs");
+async function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-  // deploy the contract
-  const deployedCryptoDevsContract = await cryptoDevsContract.deploy(
-    metadataURL,
-    whitelistContract
-  );
+async function main() {
+  // Deploy the CryptoDevs Contract
+  const nftContract = await hre.ethers.deployContract("CryptoDevs", [WHITELIST_CONTRACT_ADDRESS]);
+
+  // wait for the contract to deploy
+  await nftContract.waitForDeployment();
 
   // print the address of the deployed contract
-  console.log(
-    "Crypto Devs Contract Address:",
-    deployedCryptoDevsContract.address
-  );
+  console.log("NFT Contract Address:", nftContract.target);
+
+  // Sleep for 30 seconds while Etherscan indexes the new contract deployment
+  await sleep(30 * 1000); // 30s = 30 * 1000 milliseconds
+
+  // Verify the contract on etherscan
+  await hre.run("verify:verify", {
+    address: nftContract.target,
+    constructorArguments: [WHITELIST_CONTRACT_ADDRESS],
+  });
 }
 
 // Call the main function and catch if there is any error
